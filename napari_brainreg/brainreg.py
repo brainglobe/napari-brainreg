@@ -8,8 +8,11 @@ see: https://napari.org/docs/plugins/hook_specifications.html
 
 Replace code below accordingly.  For complete documentation see:
 https://napari.org/docs/plugins/for_plugin_developers.html
+
+Adapted from napari-ndtiffs by @tlambert03
 """
-import numpy as np
+import os
+import imio
 from napari_plugin_engine import napari_hook_implementation
 
 
@@ -28,18 +31,21 @@ def napari_get_reader(path):
         If the path is a recognized format, return a function that accepts the
         same path or list of paths, and returns a list of layer data tuples.
     """
-    if isinstance(path, list):
-        # reader plugins may be handed single path, or a list of paths.
-        # if it is a list, it is assumed to be an image stack...
-        # so we are only going to look at the first file.
-        path = path[0]
 
-    # if we know we cannot read the file, we immediately return None.
-    if not path.endswith(".npy"):
-        return None
+    if isinstance(path, str) and is_brainreg_dir(path):
+        return reader_function
 
-    # otherwise we return the *function* that can read ``path``.
-    return reader_function
+
+def is_brainreg_dir(path):
+    path = os.path.abspath(path)
+    if os.path.isdir(path):
+        filelist = os.listdir(path)
+    else:
+        return False
+    for fname in filelist:
+        if fname.endswith(".log") and fname.startswith("brainreg"):
+            return True
+    return False
 
 
 def reader_function(path):
@@ -64,16 +70,16 @@ def reader_function(path):
         Both "meta", and "layer_type" are optional. napari will default to
         layer_type=="image" if not provided
     """
-    # handle both a string and a list of strings
-    paths = [path] if isinstance(path, str) else path
-    # load all files into array
-    arrays = [np.load(_path) for _path in paths]
-    # stack arrays into single array
-    data = np.squeeze(np.stack(arrays))
 
-    # optional kwargs for the corresponding viewer.add_* method
-    # https://napari.org/docs/api/napari.components.html#module-napari.components.add_layers_mixin
-    add_kwargs = {}
-
-    layer_type = "image"  # optional, default is "image"
-    return [(data, add_kwargs, layer_type)]
+    print("Loading brainreg directory")
+    path = os.path.abspath(path)
+    downsampled = imio.load_any(os.path.join(path, "downsampled.tiff"))
+    boundaries = imio.load_any(os.path.join(path, "boundaries.tiff"))
+    return [
+        (downsampled, {"name": "Downsampled image"}, "image"),
+        (
+            boundaries,
+            {"name": "Boundaries", "blending": "additive", "opacity": 0.5},
+            "image",
+        ),
+    ]

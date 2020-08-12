@@ -75,8 +75,14 @@ def reader_function(path):
     path = os.path.abspath(path)
     downsampled = imio.load_any(os.path.join(path, "downsampled.tiff"))
     boundaries = imio.load_any(os.path.join(path, "boundaries.tiff"))
+    annotations = imio.load_any(os.path.join(path, "registered_atlas.tiff"))
     return [
         (downsampled, {"name": "Downsampled image"}, "image"),
+        (
+            annotations,
+            {"name": "Annotations", "blending": "additive", "opacity": 0.3},
+            "labels",
+        ),
         (
             boundaries,
             {"name": "Boundaries", "blending": "additive", "opacity": 0.5},

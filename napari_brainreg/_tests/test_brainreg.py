@@ -1,4 +1,3 @@
-import numpy as np
 from napari_brainreg import napari_get_reader
 
 

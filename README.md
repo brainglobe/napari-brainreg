@@ -6,7 +6,7 @@
 [![tests](https://github.com/adamltyson/napari-brainreg/workflows/tests/badge.svg)](https://github.com/adamltyson/napari-brainreg/actions)
 [![codecov](https://codecov.io/gh/adamltyson/napari-brainreg/branch/master/graph/badge.svg)](https://codecov.io/gh/adamltyson/napari-brainreg)
 
-Opens brainreg registration output
+Opens [brainreg](https://github.com/brainglobe/brainreg) registration output
 
 ----------------------------------
 
@@ -26,6 +26,10 @@ You can install `napari-brainreg` via [pip]:
 
     pip install napari-brainreg
 
+## Installation
+
+Just open napari drag your [brainreg](https://github.com/brainglobe/brainreg) output directory (the one with the log file) onto the napari window.
+    
 ## Contributing
 
 Contributions are very welcome. Tests can be run with [tox], please ensure

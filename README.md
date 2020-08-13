@@ -8,6 +8,8 @@
 
 Visualise [brainreg](https://github.com/brainglobe/brainreg) registration output in napari
 
+Based on the [napari cookiecutter plugin template](https://github.com/napari/cookiecutter-napari-plugin) and [napari-ndtiffs](https://github.com/tlambert03/napari-ndtiffs) by [@tlambert03](https://github.com/tlambert03)
+
 ----------------------------------
 
 ## Installation

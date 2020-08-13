@@ -1,14 +1,13 @@
-import os
+from pathlib import Path
 from napari_brainreg import napari_get_reader
 
-data_dir = os.path.join(os.getcwd(), "tests", "data")
-
+data_dir = Path(__file__).resolve().parent / "data"
 # TODO: Test data loaded is correct
 
 
 def test_reader():
     # try to read data
-    reader = napari_get_reader(data_dir)
+    reader = napari_get_reader(str(data_dir))
     assert callable(reader)
 
     # make sure we're delivering the right format

@@ -6,19 +6,25 @@
 [![tests](https://github.com/brainglobe/napari-brainreg/workflows/tests/badge.svg)](https://github.com/adamltyson/napari-brainreg/actions)
 [![codecov](https://codecov.io/gh/brainglobe/napari-brainreg/branch/master/graph/badge.svg)](https://codecov.io/gh/adamltyson/napari-brainreg)
 
-Visualise [brainreg](https://github.com/brainglobe/brainreg) registration output in napari
+Visualise [brainreg](https://github.com/brainglobe/brainreg) registration output in [napari](https://github.com/napari/napari)
 
 Based on the [napari cookiecutter plugin template](https://github.com/napari/cookiecutter-napari-plugin) and [napari-ndtiffs](https://github.com/tlambert03/napari-ndtiffs) by [@tlambert03](https://github.com/tlambert03)
 
 ----------------------------------
 
 ## Installation
-
-You can install `napari-brainreg` via pip:
+Assuming you already have [napari](https://github.com/napari/napari) installed, you can install `napari-brainreg` via pip:
 
     pip install napari-brainreg
 
 ## Usage
-
-Just open napari drag your [brainreg](https://github.com/brainglobe/brainreg) output directory (the one with the log file) onto the napari window.
+Open napari and drag your [brainreg](https://github.com/brainglobe/brainreg) output directory (the one with the log file) onto the napari window.
     
+Various images should then open, including:
+* `Image (downsampled)` - the image used for registration
+* `Annotations` - the atlas labels, warped to your sample brain
+* `Boundaries` - the boundaries of the atlas regions
+
+If you downsampled additional channels, these will also be loaded.
+
+![process](https://raw.githubusercontent.com/brainglobe/napari-brainreg/master/resources/napari-brainreg.png)

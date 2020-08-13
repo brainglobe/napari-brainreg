@@ -14,7 +14,7 @@ Based on the [napari cookiecutter plugin template](https://github.com/napari/coo
 
 ## Installation
 
-You can install `napari-brainreg` via [pip]:
+You can install `napari-brainreg` via pip:
 
     pip install napari-brainreg
 

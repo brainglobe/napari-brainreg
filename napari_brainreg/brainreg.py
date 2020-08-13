@@ -1,18 +1,6 @@
-"""
-This module is an example of a barebones numpy reader plugin for napari.
-
-It implements the ``napari_get_reader`` hook specification, (to create
-a reader plugin) but your plugin may choose to implement any of the hook
-specifications offered by napari.
-see: https://napari.org/docs/plugins/hook_specifications.html
-
-Replace code below accordingly.  For complete documentation see:
-https://napari.org/docs/plugins/for_plugin_developers.html
-
-Adapted from napari-ndtiffs by @tlambert03
-"""
 import os
-import imio
+import tifffile
+from pathlib import Path
 from napari_plugin_engine import napari_hook_implementation
 
 
@@ -37,6 +25,19 @@ def napari_get_reader(path):
 
 
 def is_brainreg_dir(path):
+    """Determines whether a path is to a brainreg output directory
+
+    Parameters
+    ----------
+    path : str
+        Path to file.
+
+    Returns
+    -------
+    function or None
+        If the path is a recognized format, return a function that accepts the
+        same path or list of paths, and returns a list of layer data tuples.
+    """
     path = os.path.abspath(path)
     if os.path.isdir(path):
         filelist = os.listdir(path)
@@ -46,6 +47,42 @@ def is_brainreg_dir(path):
         if fname.endswith(".log") and fname.startswith("brainreg"):
             return True
     return False
+
+
+def load_additional_downsampled_channels(
+    path,
+    layers,
+    extension=".tiff",
+    search_string="downsampled_",
+    exlusion_string="downsampled_standard",
+):
+
+    # Get additional downsampled channels, but not main one, and not those
+    # in standard space
+
+    for file in path.iterdir():
+        if (
+            (file.suffix == extension)
+            and file.name.startswith(search_string)
+            and not file.name.startswith(exlusion_string)
+        ):
+
+            print(
+                f"Found additional downsampled image: {file.name}, "
+                f"adding to viewer"
+            )
+            name = file.name.strip(search_string).strip(extension) + (
+                " (downsampled)"
+            )
+            layers.append(
+                (
+                    tifffile.imread(file),
+                    {"name": name, "visible": False},
+                    "image",
+                )
+            )
+
+    return layers
 
 
 def reader_function(path):
@@ -72,20 +109,32 @@ def reader_function(path):
     """
 
     print("Loading brainreg directory")
-    path = os.path.abspath(path)
-    downsampled = imio.load_any(os.path.join(path, "downsampled.tiff"))
-    boundaries = imio.load_any(os.path.join(path, "boundaries.tiff"))
-    annotations = imio.load_any(os.path.join(path, "registered_atlas.tiff"))
-    return [
-        (downsampled, {"name": "Downsampled image"}, "image"),
+    path = Path(os.path.abspath(path))
+
+    layers = []
+    layers = load_additional_downsampled_channels(path, layers)
+    layers.append(
         (
-            annotations,
+            tifffile.imread(path / "downsampled.tiff"),
+            {"name": "Image (downsampled)"},
+            "image",
+        )
+    )
+
+    layers.append(
+        (
+            tifffile.imread(path / "registered_atlas.tiff"),
             {"name": "Annotations", "blending": "additive", "opacity": 0.3},
             "labels",
-        ),
+        )
+    )
+
+    layers.append(
         (
-            boundaries,
+            tifffile.imread(path / "boundaries.tiff"),
             {"name": "Boundaries", "blending": "additive", "opacity": 0.5},
             "image",
-        ),
-    ]
+        )
+    )
+
+    return layers

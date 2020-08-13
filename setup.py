@@ -11,15 +11,7 @@ def read(fname):
     return codecs.open(file_path, encoding="utf-8").read()
 
 
-# Add your dependencies in requirements.txt
-# Note: you can add test-specific requirements in tox.ini
-requirements = []
-with open("requirements.txt") as f:
-    for line in f:
-        stripped = line.split("#")[0].strip()
-        if len(stripped) > 0:
-            requirements.append(stripped)
-
+requirements = ["napari-plugin-engine >= 0.1.4", "tifffile"]
 
 # https://github.com/pypa/setuptools_scm
 use_scm = {"write_to": "napari_brainreg/_version.py"}
@@ -30,7 +22,7 @@ setup(
     author_email="adam.tyson@ucl.ac.uk",
     license="MIT",
     url="https://github.com/adamltyson/napari-brainreg",
-    description="Opens brainreg registration output",
+    description="Visualise brainreg registration output",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     packages=find_packages(),

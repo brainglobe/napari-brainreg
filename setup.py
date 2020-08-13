@@ -30,7 +30,7 @@ setup(
     author_email="adam.tyson@ucl.ac.uk",
     license="MIT",
     url="https://github.com/adamltyson/napari-brainreg",
-    description="Opens brainreg registration output",
+    description="Visualise brainreg registration output",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     packages=find_packages(),

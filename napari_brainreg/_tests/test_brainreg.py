@@ -3,7 +3,8 @@ from napari_brainreg import napari_get_reader
 
 data_dir = os.path.join(os.getcwd(), "data")
 
-#TODO: Test data loaded is correct
+# TODO: Test data loaded is correct
+
 
 def test_reader():
     # try to read data
@@ -20,5 +21,3 @@ def test_reader():
 def test_get_reader_pass():
     reader = napari_get_reader("fake.file")
     assert reader is None
-
-

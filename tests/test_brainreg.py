@@ -1,7 +1,7 @@
 import os
 from napari_brainreg import napari_get_reader
 
-data_dir = os.path.join(os.getcwd(), "data")
+data_dir = os.path.join(os.getcwd(), "tests", "data")
 
 # TODO: Test data loaded is correct
 

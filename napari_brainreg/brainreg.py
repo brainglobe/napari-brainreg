@@ -1,18 +1,5 @@
-"""
-This module is an example of a barebones numpy reader plugin for napari.
-
-It implements the ``napari_get_reader`` hook specification, (to create
-a reader plugin) but your plugin may choose to implement any of the hook
-specifications offered by napari.
-see: https://napari.org/docs/plugins/hook_specifications.html
-
-Replace code below accordingly.  For complete documentation see:
-https://napari.org/docs/plugins/for_plugin_developers.html
-
-Adapted from napari-ndtiffs by @tlambert03
-"""
 import os
-import imio
+import tifffile
 from napari_plugin_engine import napari_hook_implementation
 
 
@@ -37,6 +24,19 @@ def napari_get_reader(path):
 
 
 def is_brainreg_dir(path):
+    """Determines whether a path is to a brainreg output directory
+
+    Parameters
+    ----------
+    path : str
+        Path to file.
+
+    Returns
+    -------
+    function or None
+        If the path is a recognized format, return a function that accepts the
+        same path or list of paths, and returns a list of layer data tuples.
+    """
     path = os.path.abspath(path)
     if os.path.isdir(path):
         filelist = os.listdir(path)
@@ -73,9 +73,9 @@ def reader_function(path):
 
     print("Loading brainreg directory")
     path = os.path.abspath(path)
-    downsampled = imio.load_any(os.path.join(path, "downsampled.tiff"))
-    boundaries = imio.load_any(os.path.join(path, "boundaries.tiff"))
-    annotations = imio.load_any(os.path.join(path, "registered_atlas.tiff"))
+    downsampled = tifffile.imread(os.path.join(path, "downsampled.tiff"))
+    boundaries = tifffile.imread(os.path.join(path, "boundaries.tiff"))
+    annotations = tifffile.imread(os.path.join(path, "registered_atlas.tiff"))
     return [
         (downsampled, {"name": "Downsampled image"}, "image"),
         (

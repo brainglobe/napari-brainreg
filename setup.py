@@ -28,17 +28,6 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     install_requires=requirements,
-    extras_require={
-        "dev": [
-            "black",
-            "pytest-cov",
-            "pytest",
-            "coverage",
-            "bump2version",
-            "pre-commit",
-            "flake8",
-        ]
-    },
     use_scm_version=use_scm,
     setup_requires=["setuptools_scm"],
     classifiers=[

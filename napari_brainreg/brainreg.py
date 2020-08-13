@@ -1,5 +1,6 @@
 import os
 import tifffile
+from pathlib import Path
 from napari_plugin_engine import napari_hook_implementation
 
 
@@ -48,6 +49,42 @@ def is_brainreg_dir(path):
     return False
 
 
+def load_additional_downsampled_channels(
+    path,
+    layers,
+    extension=".tiff",
+    search_string="downsampled_",
+    exlusion_string="downsampled_standard",
+):
+
+    # Get additional downsampled channels, but not main one, and not those
+    # in standard space
+
+    for file in path.iterdir():
+        if (
+            (file.suffix == extension)
+            and file.name.startswith(search_string)
+            and not file.name.startswith(exlusion_string)
+        ):
+
+            print(
+                f"Found additional downsampled image: {file.name}, "
+                f"adding to viewer"
+            )
+            name = file.name.strip(search_string).strip(extension) + (
+                " (downsampled)"
+            )
+            layers.append(
+                (
+                    tifffile.imread(file),
+                    {"name": name, "visible": False},
+                    "image",
+                )
+            )
+
+    return layers
+
+
 def reader_function(path):
     """Take a path or list of paths and return a list of LayerData tuples.
 
@@ -72,20 +109,32 @@ def reader_function(path):
     """
 
     print("Loading brainreg directory")
-    path = os.path.abspath(path)
-    downsampled = tifffile.imread(os.path.join(path, "downsampled.tiff"))
-    boundaries = tifffile.imread(os.path.join(path, "boundaries.tiff"))
-    annotations = tifffile.imread(os.path.join(path, "registered_atlas.tiff"))
-    return [
-        (downsampled, {"name": "Downsampled image"}, "image"),
+    path = Path(os.path.abspath(path))
+
+    layers = []
+    layers = load_additional_downsampled_channels(path, layers)
+    layers.append(
         (
-            annotations,
+            tifffile.imread(path / "downsampled.tiff"),
+            {"name": "Image (downsampled)"},
+            "image",
+        )
+    )
+
+    layers.append(
+        (
+            tifffile.imread(path / "registered_atlas.tiff"),
             {"name": "Annotations", "blending": "additive", "opacity": 0.3},
             "labels",
-        ),
+        )
+    )
+
+    layers.append(
         (
-            boundaries,
+            tifffile.imread(path / "boundaries.tiff"),
             {"name": "Boundaries", "blending": "additive", "opacity": 0.5},
             "image",
-        ),
-    ]
+        )
+    )
+
+    return layers

@@ -11,7 +11,7 @@ def read(fname):
     return codecs.open(file_path, encoding="utf-8").read()
 
 
-requirements = ["napari-plugin-engine >= 0.1.4", "tifffile"]
+requirements = ["napari-plugin-engine >= 0.1.4", "tifffile>=2020.8.13"]
 
 # https://github.com/pypa/setuptools_scm
 use_scm = {"write_to": "napari_brainreg/_version.py"}

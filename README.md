@@ -1,11 +1,11 @@
 # napari-brainreg
 
-[![License](https://img.shields.io/pypi/l/napari-brainreg.svg?color=green)](https://github.com/napari/napari-brainreg/raw/master/LICENSE)
+[![License](https://img.shields.io/pypi/l/napari-brainreg.svg?color=green)](https://github.com/brainglobe/napari-brainreg/raw/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/napari-brainreg.svg?color=green)](https://pypi.org/project/napari-brainreg)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-brainreg.svg?color=green)](https://python.org)
-[![tests](https://github.com/brainglobe/napari-brainreg/workflows/tests/badge.svg)](https://github.com/adamltyson/napari-brainreg/actions)
+[![tests](https://github.com/brainglobe/napari-brainreg/workflows/tests/badge.svg)](https://github.com/brainglobe/napari-brainreg/actions)
 [![Development Status](https://img.shields.io/pypi/status/napari-brainreg.svg)](https://github.com/brainglobe/napari-brainreg)
-[![codecov](https://codecov.io/gh/brainglobe/napari-brainreg/branch/master/graph/badge.svg)](https://codecov.io/gh/adamltyson/napari-brainreg)
+[![codecov](https://codecov.io/gh/brainglobe/napari-brainreg/branch/master/graph/badge.svg)](https://codecov.io/gh/brainglobe/napari-brainreg)
 [![Gitter](https://badges.gitter.im/cellfinder/brainreg.svg)](https://gitter.im/cellfinder/brainreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Visualise [brainreg](https://github.com/brainglobe/brainreg) registration output in [napari](https://github.com/napari/napari)

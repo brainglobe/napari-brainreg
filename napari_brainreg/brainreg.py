@@ -1,4 +1,5 @@
 import os
+import json
 import tifffile
 from pathlib import Path
 from napari_plugin_engine import napari_hook_implementation
@@ -110,13 +111,15 @@ def reader_function(path):
 
     print("Loading brainreg directory")
     path = Path(os.path.abspath(path))
+    with open(path / "brainreg.json") as json_file:
+        metadata = json.load(json_file)
 
     layers = []
     layers = load_additional_downsampled_channels(path, layers)
     layers.append(
         (
             tifffile.imread(path / "downsampled.tiff"),
-            {"name": "Image (downsampled)"},
+            {"name": "Image (downsampled)", "metadata": metadata},
             "image",
         )
     )

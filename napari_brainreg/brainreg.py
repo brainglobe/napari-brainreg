@@ -127,7 +127,12 @@ def reader_function(path):
     layers.append(
         (
             tifffile.imread(path / "registered_atlas.tiff"),
-            {"name": metadata["atlas"], "blending": "additive", "opacity": 0.3},
+            {
+                "name": metadata["atlas"],
+                "blending": "additive",
+                "opacity": 0.3,
+                "visible": False,
+            },
             "labels",
         )
     )
@@ -135,7 +140,12 @@ def reader_function(path):
     layers.append(
         (
             tifffile.imread(path / "boundaries.tiff"),
-            {"name": "Boundaries", "blending": "additive", "opacity": 0.5},
+            {
+                "name": "Boundaries",
+                "blending": "additive",
+                "opacity": 0.5,
+                "visible": False,
+            },
             "image",
         )
     )

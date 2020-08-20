@@ -44,7 +44,7 @@ def is_brainreg_dir(path):
     else:
         return False
     for fname in filelist:
-        if fname.endswith(".log") and fname.startswith("brainreg"):
+        if fname == "brainreg.json":
             return True
     return False
 

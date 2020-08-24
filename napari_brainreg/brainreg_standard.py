@@ -30,7 +30,10 @@ def napari_get_reader(path):
 
 def load_atlas(atlas, layers):
     atlas_image = BrainGlobeAtlas(atlas).annotation
-    layers.append((atlas_image, {"name": atlas, "visible": False}, "labels",))
+    layers.append((atlas_image, {"name": atlas, "visible": False,
+                                 "blending": "additive",
+                                 "opacity": 0.3,
+                                 }, "labels",))
 
     return layers
 

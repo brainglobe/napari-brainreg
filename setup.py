@@ -50,8 +50,8 @@ setup(
     ],
     entry_points={
         "napari.plugin": [
-            "brainreg_standard = napari_brainreg.brainreg_standard",
             "brainreg = napari_brainreg.brainreg",
+            "brainreg_standard = napari_brainreg.brainreg_standard",
         ],
     },
 )

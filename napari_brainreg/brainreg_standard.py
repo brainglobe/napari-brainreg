@@ -4,10 +4,12 @@ import tifffile
 from pathlib import Path
 from napari_plugin_engine import napari_hook_implementation
 
+from bg_atlasapi.bg_atlas import BrainGlobeAtlas
+
 from .utils import is_brainreg_dir, load_additional_downsampled_channels
 
-# Assume this is more used
-@napari_hook_implementation(tryfirst=True)
+
+@napari_hook_implementation
 def napari_get_reader(path):
     """A basic implementation of the napari_get_reader hook specification.
 
@@ -25,6 +27,13 @@ def napari_get_reader(path):
 
     if isinstance(path, str) and is_brainreg_dir(path):
         return reader_function
+
+
+def load_atlas(atlas, layers):
+    atlas_image = BrainGlobeAtlas(atlas).annotation
+    layers.append((atlas_image, {"name": atlas, "visible": False}, "labels",))
+
+    return layers
 
 
 def reader_function(path):
@@ -56,39 +65,19 @@ def reader_function(path):
         metadata = json.load(json_file)
 
     layers = []
-    layers = load_additional_downsampled_channels(path, layers)
+    layers = load_additional_downsampled_channels(
+        path,
+        layers,
+        search_string="downsampled_standard",
+        exlusion_string="downsampled_standard.tiff",
+    )
     layers.append(
         (
-            tifffile.imread(path / "downsampled.tiff"),
+            tifffile.imread(path / "downsampled_standard.tiff"),
             {"name": "Registered image", "metadata": metadata},
             "image",
         )
     )
-
-    layers.append(
-        (
-            tifffile.imread(path / "registered_atlas.tiff"),
-            {
-                "name": metadata["atlas"],
-                "blending": "additive",
-                "opacity": 0.3,
-                "visible": False,
-            },
-            "labels",
-        )
-    )
-
-    layers.append(
-        (
-            tifffile.imread(path / "boundaries.tiff"),
-            {
-                "name": "Boundaries",
-                "blending": "additive",
-                "opacity": 0.5,
-                "visible": False,
-            },
-            "image",
-        )
-    )
+    layers = load_atlas(metadata["atlas"], layers)
 
     return layers

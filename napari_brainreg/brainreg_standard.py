@@ -29,12 +29,12 @@ def napari_get_reader(path):
 
 
 def load_atlas(atlas, layers):
-    atlas_image = BrainGlobeAtlas(atlas).annotation
+    atlas_image = atlas.annotation
     layers.append(
         (
             atlas_image,
             {
-                "name": atlas,
+                "name": atlas.atlas_name,
                 "visible": False,
                 "blending": "additive",
                 "opacity": 0.3,
@@ -74,6 +74,8 @@ def reader_function(path):
     with open(path / "brainreg.json") as json_file:
         metadata = json.load(json_file)
 
+    atlas = BrainGlobeAtlas(metadata["atlas"])
+    metadata["atlas_class"] = atlas
     layers = []
     layers = load_additional_downsampled_channels(
         path,
@@ -88,6 +90,6 @@ def reader_function(path):
             "image",
         )
     )
-    layers = load_atlas(metadata["atlas"], layers)
+    layers = load_atlas(atlas, layers)
 
     return layers

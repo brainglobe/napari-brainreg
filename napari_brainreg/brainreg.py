@@ -3,6 +3,7 @@ import json
 import tifffile
 from pathlib import Path
 from napari_plugin_engine import napari_hook_implementation
+from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 
 from .utils import is_brainreg_dir, load_additional_downsampled_channels
 
@@ -54,6 +55,9 @@ def reader_function(path):
     path = Path(os.path.abspath(path))
     with open(path / "brainreg.json") as json_file:
         metadata = json.load(json_file)
+
+    atlas = BrainGlobeAtlas(metadata["atlas"])
+    metadata["atlas_class"] = atlas
 
     layers = []
     layers = load_additional_downsampled_channels(path, layers)

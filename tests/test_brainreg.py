@@ -1,5 +1,5 @@
 from pathlib import Path
-from napari_brainreg import napari_get_reader
+from napari_brainreg.brainreg import napari_get_reader
 
 data_dir = str(Path(__file__).resolve().parent / "data")
 # TODO: Test data loaded is correct

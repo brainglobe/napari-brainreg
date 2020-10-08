@@ -77,6 +77,7 @@ def reader_function(path):
                 "blending": "additive",
                 "opacity": 0.3,
                 "visible": False,
+                "metadata": metadata,
             },
             "labels",
         )

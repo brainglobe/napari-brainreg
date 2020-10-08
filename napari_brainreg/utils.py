@@ -21,9 +21,8 @@ def is_brainreg_dir(path):
         filelist = os.listdir(path)
     else:
         return False
-    for fname in filelist:
-        if fname == "brainreg.json":
-            return True
+    if "brainreg.json" in filelist:
+        return True
     return False
 
 

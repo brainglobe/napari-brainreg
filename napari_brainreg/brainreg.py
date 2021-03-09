@@ -61,11 +61,23 @@ def reader_function(path):
 
     layers = []
     layers = load_additional_downsampled_channels(path, layers)
+
     layers.append(
         (
             tifffile.imread(path / "downsampled.tiff"),
             {"name": "Registered image", "metadata": metadata},
             "image",
+        )
+    )
+    layers.append(
+        (
+            tifffile.imread(path / "registered_hemispheres.tiff"),
+            {
+                "name": "Hemispheres",
+                "visible": False,
+                "opacity": 0.3,
+            },
+            "labels",
         )
     )
 

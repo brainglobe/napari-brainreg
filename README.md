@@ -1,4 +1,5 @@
 # napari-brainreg
+### This tool is no longer under development, please use [brainglobe-napari-io](https://github.com/brainglobe/brainglobe-napari-io) instead
 
 [![License](https://img.shields.io/pypi/l/napari-brainreg.svg?color=green)](https://github.com/brainglobe/napari-brainreg/raw/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/napari-brainreg.svg?color=green)](https://pypi.org/project/napari-brainreg)
